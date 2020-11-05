@@ -1,0 +1,28 @@
+{
+  "name": "SkyID-example-note-dapp",
+  "version": "1.0.0",
+  "description": "https://skyacc.hns.siasky.net/",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DaWe35/SkyID-example-note-dapp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DaWe35/SkyID-example-note-dapp/issues"
+  },
+  "homepage": "https://github.com/DaWe35/SkyID-example-note-dapp#readme",
+  "dependencies": {
+    "prettier": "^2.1.2",
+    "skynet-js": "^2.4.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.4.0",
+    "webpack-cli": "^4.2.0"
+  }
+}

@@ -1,81 +1,142 @@
-<link rel="stylesheet" href="bootstrap.min.css">
-<link rel="stylesheet" href="style.css">
-<meta charset="utf-8">
+<link rel="stylesheet" href="bootstrap.min.css" />
+<link rel="stylesheet" href="style.css" />
+<meta charset="utf-8" />
 
 <title>Note & SkyID</title>
 
 <!-- Logout button -->
-<div class="show-if-initialized show-if-logged-in logout-bar" style="display:none">
-	<a href="javascript: skyid.sessionDestroy()">Logout</a>
+<div
+  class="show-if-initialized show-if-logged-in logout-bar"
+  style="display: none"
+>
+  <a href="javascript: skyid.sessionDestroy()">Logout</a>
 </div>
 
-<!-- What is this for? -->
+<!-- Shown while loading/saving note -->
 <div class="hide-if-initialized">
-	<h2 class="big-margin">Loading...</h2>
+  <h2 class="big-margin">Loading...</h2>
 </div>
-
 
 <!-- Login Button -->
-<div class="show-if-initialized hide-if-logged-in" style="display:none">
-	<h2>Make a note while using <a href="https:/skyaccounts.hns.siasky.net">SkyID</a> for authentication</h2>
+<div class="show-if-initialized hide-if-logged-in" style="display: none">
+  <h2>
+    Make a note while using
+    <a href="https:/skyaccounts.hns.siasky.net">SkyID</a> for authentication
+  </h2>
 
-	<!-- Button for login -->
-	<button onclick="skyid.sessionStart()" class="skyid-button button-blow big-margin">
-		<img src="SkyID_Logo_128_white.png" alt="SkyID" class="skyid-logo">
-		Sign in with SkyID
-	</button>
+  <!-- Button for login -->
+  <button
+    onclick="skyid.sessionStart()"
+    class="skyid-button button-blow big-margin"
+  >
+    <img src="SkyID_Logo_128_white.png" alt="SkyID" class="skyid-logo" />
+    Sign in with SkyID
+  </button>
 </div>
 
 <!-- Save Note -->
-<div class="show-if-initialized show-if-logged-in small-margin" style="display:none">
-<!-- Note body -->
-  <textarea id="note" class="p-3 rounded">Loading... </textarea><br>
-	<button id="save_note" class="skyid-button small-margin-top" onclick="saveNote()">Save unencrypted note</button>
+<div
+  class="show-if-initialized show-if-logged-in small-margin"
+  style="display: none"
+>
+  <h2>Create your profile information</h2>
+  <!-- Profile Info -->
+  <input id="name" placeholder="name" /><br />
+  <input id="email" placeholder="email" /><br />
+  <input id="avatar" type="file" /><br />
+  <span id="file-selected"></span><br />
+  <a id="skylink" href=""></a><br />
+  <textarea id="bio" class="p-3 rounded" placeholder="bio"></textarea><br />
+
+  <button
+    id="save_note"
+    class="skyid-button small-margin-top"
+    onclick="saveNote()"
+  >
+    Save Profile
+  </button>
 </div>
 
-
 <!-- Footer Info -->
-<footer>Read more on <a href="https://github.com/DaWe35/SkyID-example-note-dapp" target="_blank">GitHub</a> -
-	forked from <a href="https://skyportal.xyz/_BF4CHsFIichxjdgAFhU-tEKqsoPDxC9OMsWbMkyMbz4KQ/" target="_blank">Note to myself</a>
+<footer>
+  Read more on
+  <a href="https://github.com/DaWe35/SkyID-example-note-dapp" target="_blank"
+    >GitHub</a
+  >
+  - forked from
+  <a
+    href="https://skyportal.xyz/_BF4CHsFIichxjdgAFhU-tEKqsoPDxC9OMsWbMkyMbz4KQ/"
+    target="_blank"
+    >Note to myself</a
+  >
 </footer>
-
 
 <!-- Initialize and setup SkyID -->
 <script src="https://skyaccounts.hns.siasky.net/skyid.js"></script>
+<script src="main.js"></script>
 
 <!-- SkyID Javascript Code -->
 <script>
- var skyid = new SkyID('Example skapp')
+  // Avatar File Selection
+  const avatarElement = document.getElementById("avatar");
+  avatarElement.addEventListener("change", (event) => {
+    const result = document.getElementById("file-selected");
+    result.textContent = event.target.value;
+  });
 
-	if (skyid.seed != '') { 
-		fetchNote()
-	}
+  // SkyID Code
+  var skyid = new SkyID("Example skapp");
 
-	// fetch the note
-	function fetchNote() {
-		// fetch file
-		skyid.getFile('note', function(response, revision) {
-			var note = document.getElementById('note')
-			if (response == '') { // file not found
-				note.value = ''
-			} else { // success
-				var respObs = JSON.parse(response)
-				note.value = respObs.data
-			}
-		})
-	}
+  if (skyid.seed != "") {
+    fetchNote();
+  }
+
+  // fetch the note
+  function fetchNote() {
+    // fetch file
+    skyid.getFile("profile", function (response, revision) {
+      var name = document.getElementById("name");
+      var email = document.getElementById("email");
+      var bio = document.getElementById("bio");
+      var fileSelecter = document.getElementById("file-selected");
+      var avatarlink = document.getElementById("skylink");
+      if (response == "") {
+        // file not found
+      } else {
+        // success
+        var respObs = JSON.parse(response);
+        name.value = respObs.data.name;
+        email.value = respObs.data.email;
+        bio.value = respObs.data.bio;
+        avatarlink.text = respObs.data.avatarskylink;
+        avatarlink.href = respObs.data.avatarskylink;
+        fileSelecter.textContent = "";
+      }
+    });
+  }
 
   // Save the note
-	function saveNote() {
-		// convert note to json
-		var note = document.getElementById('note').value
-		var json = JSON.stringify({ data: note })
+  function saveNote() {
+    // Grab profile inforamtion
+    var name = document.getElementById("name").value;
+    var email = document.getElementById("email").value;
+    var bio = document.getElementById("bio").value;
+    var avatar = document.getElementById("avatar").files[0];
+    window.upload(avatar);
+    var avatarskylink = document.getElementById("skylink").text;
 
-		// upload to registry with SkyID key
-		skyid.setFile('note', json, function(response) {
-			if (response != true) {
-				alert('Sorry, but upload failed :(')
-			}
-		})
-	}
+    console.log("name", name);
+    console.log("email", email);
+    console.log("bio", bio);
+    console.log("avatarskylink", avatarskylink);
+    // convert to json
+    var json = JSON.stringify({ name, email, bio, avatarskylink });
+
+    // upload to registry with SkyID key
+    skyid.setFile("profile", json, function (response) {
+      if (response != true) {
+        alert("Sorry, but upload failed :(");
+      }
+    });
+  }
 </script>
