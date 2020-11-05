@@ -1,0 +1,34 @@
+<link rel="stylesheet" href="bootstrap.min.css" />
+<link rel="stylesheet" href="style.css" />
+<meta charset="utf-8" />
+
+<title>Note & SkyID</title>
+
+<div>
+  <h2>Make a note and Save it to Skynet!</h2>
+</div>
+
+<div>
+  <!-- Note body -->
+  <textarea id="note" class="p-3 rounded" placeholder="your note"></textarea
+  ><br />
+  <!-- Save Note -->
+  <button
+    id="save_note"
+    class="skyid-button small-margin-top"
+    onclick="saveNote()"
+  >
+    Save note
+  </button>
+</div>
+
+<a id="mediaLink" href=""></a>
+
+<script src="main.js"></script>
+<script>
+  // saveNote grabs the value of the note and calls uploadNote
+  function saveNote() {
+    var note = document.getElementById("note").value;
+    window.uploadNote(note);
+  }
+</script>
