@@ -4,11 +4,6 @@
 
 <title>Note & SkyID</title>
 
-
-<!-- 
-  SkyID Code 
--->
-
 <!-- Logout button -->
 <div class="show-if-initialized show-if-logged-in logout-bar" style="display:none">
 	<a href="javascript: skyid.sessionDestroy()">Logout</a>
@@ -16,7 +11,7 @@
 
 <!-- What is this for? -->
 <div class="hide-if-initialized">
-	<h2 class="big-margin">What is Loading...</h2>
+	<h2 class="big-margin">Loading...</h2>
 </div>
 
 
@@ -47,13 +42,12 @@
 
 <!-- Initialize and setup SkyID -->
 <script src="https://skyaccounts.hns.siasky.net/skyid.js"></script>
- 
 
 <!-- SkyID Javascript Code -->
 <script>
  var skyid = new SkyID('Example skapp')
 
-	if (skyid.seed != '') { // if user logged in
+	if (skyid.seed != '') { 
 		fetchNote()
 	}
 
