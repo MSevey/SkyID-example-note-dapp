@@ -9,9 +9,21 @@
 </div>
 
 <div>
+  <!-- Load Note -->
+  <input id="seed" placeholder="Your Secret Seed" />
+  <button
+    id="load_note"
+    class="skyid-button small-margin-top"
+    onclick="loadNote()"
+  >
+    Load note
+  </button>
+</div>
+  <br />
+<div>
   <!-- Note body -->
-  <textarea id="note" class="p-3 rounded" placeholder="your note"></textarea
-  ><br />
+  <textarea id="note" class="p-3 rounded" placeholder="your note"></textarea>
+  <br />
   <!-- Save Note -->
   <button
     id="save_note"
@@ -22,13 +34,15 @@
   </button>
 </div>
 
-<a id="mediaLink" href=""></a>
-
 <script src="main.js"></script>
 <script>
   // saveNote grabs the value of the note and calls uploadNote
   function saveNote() {
-    var note = document.getElementById("note").value;
-    window.uploadNote(note);
+    var seed = document.getElementById("seed").value;
+    window.setNote(seed);
+  }
+  function loadNote() {
+    var seed = document.getElementById("seed").value;
+    window.getNote(seed);
   }
 </script>
